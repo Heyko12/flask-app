@@ -2,10 +2,11 @@ set -x
 set -e
 
 echo "Запуск minikube..."
-~/minikube start
+minikube start
 
 echo "Сборка Docker-образа..."
-docker build .
+eval $(minikube -p minikube docker-env)
+docker build -t flask-app-image .
 
 echo "Применение ConfigMap..."
 kubectl apply -f configmap.yaml
@@ -24,6 +25,7 @@ kubectl apply -f log-reader-role.yaml
 kubectl apply -f log-reader-rolebinding.yaml
 kubectl apply -f cronjob.yaml
 
-echo "Развертывание завершено."
+echo "Развертывание заmeвершено."
+sleep 10
 kubectl wait --for=condition=ready pod -l app=flask-app --timeout=120s
 kubectl get all

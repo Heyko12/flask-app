@@ -1,13 +1,26 @@
 from flask import Flask, request, jsonify
+import json
 import os
 
 app = Flask(__name__)
 
 log_file_path = "logs/app.log"
 
+CONFIG_PATH = "/app/config/app-config.json"
+
+def load_config():
+    try:
+        with open(CONFIG_PATH) as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading config: {e}")
+        return {"hello_message": "Welcome to the default app"}
+    
+config = load_config()
+
 @app.route("/", methods=["GET"])
 def home():
-    return "Welcome to the custom app"
+    return config["hello_message"]
 
 @app.route("/status", methods=["GET"])
 def status():
@@ -37,4 +50,3 @@ def get_logs():
 if __name__ == "__main__":
     os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
     app.run(debug=True, host='0.0.0.0', port=5000)
-

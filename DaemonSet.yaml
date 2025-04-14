@@ -21,7 +21,7 @@ spec:
               while [ -z "$(find /var/lib/kubelet/pods/ -path '*/volumes/kubernetes.io~empty-dir/logs/app.log')" ]; do
                 sleep 2
               done
-              find /var/lib/kubelet/pods/ -path '*/volumes/kubernetes.io~empty-dir/logs/app.log' | xargs tail -f
+              find /var/lib/kubelet/pods/ -path '*/volumes/kubernetes.io~empty-dir/logs/app.log' | xargs cat
           volumeMounts:
             - name: pods
               mountPath: /var/lib/kubelet/pods

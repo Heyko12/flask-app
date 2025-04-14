@@ -22,7 +22,7 @@ spec:
             - name: logs
               mountPath: /app/logs
             - name: config 
-              mountPath: /app/config
+              mountPath: /app/config/app-config.json
               subPath: app-config.json  
       volumes:
         - name: logs

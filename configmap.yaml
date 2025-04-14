@@ -5,6 +5,5 @@ metadata:
 data:
   app-config.json: |
     {
-      "log_level": "info",
-      "max_connections": 100
+      "hello_message": "Welcome to the custom app"
     }
