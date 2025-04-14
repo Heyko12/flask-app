@@ -8,7 +8,7 @@ apt-get update
 
 apt-get install curl
 
-# Запись сообщений в логи с балансировкой из curl-пода (рекомендуется сделать несколько раз)
+# Запись сообщений в логи с балансировкой из curl-пода
 curl -X POST http://flask-app-service:5000/log -H "Content-Type: application/json" -d '{"message": "text"}'
 
 # Из терминала запускаем команду для получения логов DaemonSet
