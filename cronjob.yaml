@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: log-archiver
+spec:
+  schedule: "*/10 * * * *"  
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: log-archiver
+        spec:
+          containers:
+            - name: log-archiver
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - "sh"
+                - "-c"
+                - |
+                  TIMESTAMP=$(date +%Y%m%d%H%M%S)
+                  LOGS=$(kubectl logs $(kubectl get pods --no-headers | grep '^log-agent' | awk '{print $1}'))
+                  if [ -n "$LOGS" ]; then
+                    echo "$LOGS" > /tmp/app-logs-$TIMESTAMP.log
+                    tar -czf /tmp/app-logs-$TIMESTAMP.tar.gz /tmp/app-logs-$TIMESTAMP.log
+                  else
+                    echo "No logs found."
+                  fi
+                  tail -f /dev/null
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp  
+          volumes:
+            - name: tmp
+              emptyDir: {}  
+          restartPolicy: OnFailure 
