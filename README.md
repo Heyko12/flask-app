@@ -21,7 +21,7 @@ curl -X POST http://flask-app-service:5000/log -H "Content-Type: application/jso
 # Из терминала запускаем команду для получения логов DaemonSet
 kubectl logs $(kubectl get pods --no-headers | grep '^log-agent' | awk '{print $1}')
 # Или через стандартную команду, но нужно имя пода
-kubectl logs <log-agent-pod>
+kubectl logs \<log-agent-pod\>
 
 # Получение и разархивирование логов
 kubectl cp <log-archiver-pod>:/tmp/app-logs-<timestamp>.tar.gz ./app-logs.tar.gz
