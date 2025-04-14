@@ -3,12 +3,16 @@ chmod +x deploy.sh && ./deploy.sh
 
 # Проверяем health и пишем сообщения в логи одного пода
 kubectl port-forward svc/flask-app-service 5000:5000
+
 curl http://localhost:5000/logs
+
 curl -X POST http://localhost:5000/log -H "Content-Type: application/json" -d '{"message": "text"}'
 
 # Запуск curl-пода с балансировкой
 kubectl run -i --tty busybox --image=ubuntu --restart=Never -- /bin/sh
+
 apt-get update
+
 apt-get install curl
 
 # Запись сообщений в логи с балансировкой из curl-пода
@@ -21,5 +25,6 @@ kubectl logs <log-agent-pod>
 
 # Получение и разархивирование логов
 kubectl cp <log-archiver-pod>:/tmp/app-logs-<timestamp>.tar.gz ./app-logs.tar.gz
+
 tar -xzvf app-logs.tar.gz
 
